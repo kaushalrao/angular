@@ -1,0 +1,142 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h5 class="card-category">Search Order By Contact</h5>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="input-group no-border ">
+              <ng2-completer [inputClass]="'form-control'" #myInput placeholder="Contact Number"
+                [datasource]="phoneNumberList.unique_contacts" [minSearchLength]="1"></ng2-completer>
+              <div class="Container">
+                <button class=" btn btn-outline-success my-2 my-sm-0" type="submit"
+                  (click)="onSubmit(myInput.value)">Search</button>
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" (click)="onClear()">Clear</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h5 class="card-category" style="color:red;">Pending Request</h5>
+        </div>
+        <div class="card-body">
+          <div class="example-container">
+            <div id="formContent">
+              <div cdkDropList #pendingList="cdkDropList" [cdkDropListData]="pendingOrderDetails"
+                [cdkDropListConnectedTo]="[approvedList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let item of pendingOrderDetails" cdkDrag>
+                  <div style=" text-align: left;font-weight: 500;">Order Id : {{item.order_id}}<br>
+                    Otp : {{item.otp}}</div>
+                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                    data-target="#exampleModalCenter" (click)="openModal(item.order_id,'pla')">Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h5 class="card-category" style="color:rgb(0, 38, 255);">Approved</h5>
+        </div>
+        <div class="card-body">
+          <div class="example-container">
+            <div id="formContent">
+              <div cdkDropList #approvedList="cdkDropList" [cdkDropListData]="approvedOrderDetails"
+                [cdkDropListConnectedTo]="[deliveredList]" class="example-list" (cdkDropListDropped)="drop($event)"
+                id="Approved">
+                <div class="example-box" *ngFor="let item of approvedOrderDetails" cdkDrag>
+                  <div style=" text-align: left;font-weight: 500;">Order Id : {{item.order_id}}<br>
+                    Otp : {{item.otp}}</div>
+                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                    data-target="#exampleModalCenter" (click)="openModal(item.order_id,'pro')">Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h5 class="card-category" style="color:rgb(4, 122, 0);">Delivered</h5>
+        </div>
+        <div class="card-body">
+          <div class="example-container">
+            <div id="formContent">
+              <div cdkDropList #deliveredList="cdkDropList" [cdkDropListData]="deliveredOrderDetails"
+                class="example-list" (cdkDropListDropped)="drop($event)" id="Delivered">
+                <div class="example-box" *ngFor="let item of deliveredOrderDetails" cdkDrag>
+                  <div style=" text-align: left;font-weight: 500;">Order Id : {{item.order_id}}<br>
+                    Otp : {{item.otp}}</div>
+                  <button type="button" class="btn btn-primary btn-sm" ddata-toggle="modal"
+                    data-target="#exampleModalCenter" (click)="openModal(item.order_id,'del')">Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Moadal -->
+<modal #myModal (onOpen)="2" (onClose)="2">
+  <modal-header>
+    <h4>Order Details</h4>
+  </modal-header>
+  <modal-content>
+    <h5 *ngFor="let item of productDetails1; let first = first; let last = last"
+      [ngClass]="{ first: first, last: last }">
+      <div class="card">
+        <div class="card">
+          Customer Id : {{item.customer_id}} <br>
+          Contact Number : {{item.customer_contact}} <br>
+        </div>
+        <div class="card">
+          Item Quantity : {{item.quantity}}
+          Item Code : {{item.product_code.code}} <br>
+          Item Category : {{item.product_code.category}}<br>
+          Item Description : {{item.product_code.description}}<br>
+          Item Size : {{item.product_code.size}}<br>
+          Item Price : {{item.product_code.price}}
+        </div>
+      </div>
+    </h5>
+  </modal-content>
+  <modal-footer>
+    <button *ngIf="status" class="btn btn-danger">Cancel Order</button>
+    <button class="btn btn-primary" (click)="closeModal()">Close</button>
+  </modal-footer>
+</modal>
